@@ -2,12 +2,12 @@ import graphene
 
 from graphene_django.types import DjangoObjectType
 
-from webapp.models import Student, User
+from webapp.models import Institute, User
 
 
-class StudentType(DjangoObjectType):
+class InstituteType(DjangoObjectType):
     class Meta:
-        model = Student
+        model = Institute
 
 
 class UserType(DjangoObjectType):
@@ -16,8 +16,8 @@ class UserType(DjangoObjectType):
 
 
 class Query(object):
-    allStudents = graphene.List(StudentType)
+    allStudents = graphene.List(UserType)
 
     def resolve_allStudents(self, info, **kwargs):
         # We can easily optimize query count in the resolve method
-        return Student.objects.all()
+        return User.objects.select_related('instituteId').all()
